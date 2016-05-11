@@ -31,9 +31,9 @@
  */
 #include <vi_sensor_interface.hpp>
 
-int main(int argc, char** argv) {
-
-  ViSensorInterface visensor;
-  visensor.run();
-  return 0;
+int main(int argc, char** argv)
+{
+    ViSensorInterface visensor;
+    visensor.run();
+    return 0;
 }

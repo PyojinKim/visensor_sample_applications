@@ -70,8 +70,8 @@ class ViSensorInterface {
 
   visensor::ViSensorDriver drv_;
   typedef std::deque<visensor::ViFrame::Ptr> ViFrameQueue;
-  visensor::SensorId::SensorId idxCam0_;
-  visensor::SensorId::SensorId idxCam1_;
+  static const visensor::SensorId::SensorId idxCam0_ = visensor::SensorId::CAM0;
+  static const visensor::SensorId::SensorId idxCam1_ = visensor::SensorId::CAM1;
 
   ViFrameQueue frameQueue[4];
 

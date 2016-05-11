@@ -32,9 +32,8 @@
 
 #include <vi_sensor_interface.hpp>
 
-int main(int argc, char** argv) {
-
-  ViSensorInterface viSensor;
-
-  return 0;
+int main(int argc, char** argv)
+{
+    ViSensorInterface viSensor(30,200); // (image_rate, imu_rate)
+    return 0;
 }
