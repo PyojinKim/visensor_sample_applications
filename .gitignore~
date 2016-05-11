@@ -25,3 +25,7 @@ vi_sensor_interface/build/
 vi_sensor_interface/bin/
 vi_sensor_stereo_block_matcher/build/
 vi_sensor_stereo_block_matcher/bin/
+
+# others
+.gitignore~
+README.md~
