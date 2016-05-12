@@ -75,6 +75,7 @@ void ViSensorInterface::StartIntegratedSensor(uint32_t image_rate)
     drv_.startAllCameras(image_rate);
     vi_sensor_connected_ = true;
 
+    // run left and right image saver thread
     boost::thread left_image_saver_1(boost::bind(&ViSensorInterface::saver, this, 1));  // cam_id = 1 is left cam in upside-down position
     boost::thread right_image_saver_0(boost::bind(&ViSensorInterface::saver, this, 0)); // cam_id = 0 is right cam in upside-down position
 
@@ -125,6 +126,16 @@ void ViSensorInterface::saver(unsigned int cam_id)
     uint32_t image_counter = 0;
     std::string image_file_name;
 
+    // make folders for saving current image
+    std::string folder_name;
+    char cam_index[255];
+    sprintf(cam_index, "cam%d/data/", cam_id);
+    folder_name = data_prefix_ + cam_index;
+
+    std::string folder_create_command = "mkdir -p " + folder_name;
+    system(folder_create_command.c_str());
+
+
     while (1)
     {
         // popping image from queue. If no image available, we perform a blocking wait
@@ -134,10 +145,10 @@ void ViSensorInterface::saver(unsigned int cam_id)
         image.create(frame->height, frame->width, CV_8UC1);
         memcpy(image.data, frame->getImageRawPtr(), frame->height * frame->width);
 
-        // update current image file name
-        char cam_index_image_index[255];
-        sprintf(cam_index_image_index, "cam%d/data/%010d.png", camera_id, image_counter);
-        image_file_name = data_prefix_ + cam_index_image_index;
+        // change current image file name
+        char image_index[255];
+        sprintf(image_index, "%010d.png", image_counter);
+        image_file_name = folder_name + image_index;
         std::cout << image_file_name << std::endl;
         image_counter++;
 
