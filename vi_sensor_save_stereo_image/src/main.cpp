@@ -34,6 +34,6 @@
 
 int main(int argc, char** argv)
 {
-    ViSensorInterface viSensor(20,"mav0/"); // (image_rate, data_prefix_by_user)
+    ViSensorInterface viSensor(10,"mav0/"); // (image_rate, data_prefix_by_user)
     return 0;
 }
