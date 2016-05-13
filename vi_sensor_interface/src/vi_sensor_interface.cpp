@@ -118,9 +118,11 @@ void ViSensorInterface::worker(unsigned int cam_id)
         //Popping image from queue. If no image available, we perform a blocking wait
         visensor::ViFrame::Ptr frame = frameQueue[cam_id].pop();
         uint32_t camera_id = frame->camera_id;
-        cv::Mat image;
-        image.create(frame->height, frame->width, CV_8UC1);
-        memcpy(image.data, frame->getImageRawPtr(), frame->height * frame->width);
+        cv::Mat fliped_image, image;
+        fliped_image.create(frame->height, frame->width, CV_8UC1);
+        memcpy(fliped_image.data, frame->getImageRawPtr(), frame->height * frame->width);
+        cv::flip(fliped_image, image, -1);
+
         //update window with image
         char winName[255];
         boost::mutex::scoped_lock lock(io_mutex_);  //lock thread as opencv does seem to have problems with multithreading

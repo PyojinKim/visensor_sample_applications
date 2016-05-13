@@ -132,12 +132,14 @@ void ViSensorInterface::process_data()
     if (!computed_rectification_map_)
         computeRectificationMaps();
 
-    cv::Mat img0, img1;
-    img0.create(frame0->height, frame0->width, CV_8UC1);
-    img0.data = frame0->getImageRawPtr();
+    cv::Mat fliped_img0, img0, fliped_img1, img1;
+    fliped_img0.create(frame0->height, frame0->width, CV_8UC1);
+    fliped_img0.data = frame0->getImageRawPtr();
+    cv::flip(fliped_img0, img0, -1);
 
-    img1.create(frame1->height, frame1->width, CV_8UC1);
-    img1.data = frame1->getImageRawPtr();
+    fliped_img1.create(frame1->height, frame1->width, CV_8UC1);
+    fliped_img1.data = frame1->getImageRawPtr();
+    cv::flip(fliped_img1, img1, -1);
 
     cv::Mat img0rect, img1rect;
     cv::remap(img0, img0rect, map00_, map01_, cv::INTER_LINEAR);

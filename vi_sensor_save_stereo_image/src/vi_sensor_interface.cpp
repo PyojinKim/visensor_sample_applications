@@ -76,11 +76,11 @@ void ViSensorInterface::StartIntegratedSensor(uint32_t image_rate)
     vi_sensor_connected_ = true;
 
     // run left and right image saver thread
-    boost::thread left_image_saver_1(boost::bind(&ViSensorInterface::saver, this, 1));  // cam_id = 1 is left cam in upside-down position
-    boost::thread right_image_saver_0(boost::bind(&ViSensorInterface::saver, this, 0)); // cam_id = 0 is right cam in upside-down position
+    boost::thread left_image_saver_0(boost::bind(&ViSensorInterface::saver, this, 0));  // cam_id = 0 is left cam
+    boost::thread right_image_saver_1(boost::bind(&ViSensorInterface::saver, this, 1)); // cam_id = 1 is right cam
 
-    left_image_saver_1.join();
-    right_image_saver_0.join();
+    left_image_saver_0.join();
+    right_image_saver_1.join();
 }
 
 void ViSensorInterface::ImageCallback(visensor::ViFrame::Ptr frame_ptr)
@@ -141,9 +141,10 @@ void ViSensorInterface::saver(unsigned int cam_id)
         // popping image from queue. If no image available, we perform a blocking wait
         visensor::ViFrame::Ptr frame = frameQueue[cam_id].pop();
         uint32_t camera_id = frame->camera_id;
-        cv::Mat image;
-        image.create(frame->height, frame->width, CV_8UC1);
-        memcpy(image.data, frame->getImageRawPtr(), frame->height * frame->width);
+        cv::Mat fliped_image, image;
+        fliped_image.create(frame->height, frame->width, CV_8UC1);
+        memcpy(fliped_image.data, frame->getImageRawPtr(), frame->height * frame->width);
+        cv::flip(fliped_image, image, -1);
 
         // change current image file name
         char image_index[255];
