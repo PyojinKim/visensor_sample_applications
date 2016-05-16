@@ -31,3 +31,4 @@ vi_sensor_stereo_block_matcher/bin/
 # others
 .gitignore~
 README.md~
+*.cpp~

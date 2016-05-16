@@ -76,11 +76,11 @@ void ViSensorInterface::StartIntegratedSensor(uint32_t image_rate)
     drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "row_flip", 1);
     drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "column_flip", 1);
 
-    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM0, "min_coarse_shutter_width", 250);
-    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM0, "max_coarse_shutter_width", 1250);
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM0, "min_coarse_shutter_width", 2);
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM0, "max_coarse_shutter_width", 550);
 
-    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "min_coarse_shutter_width", 250);
-    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "max_coarse_shutter_width", 1250);
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "min_coarse_shutter_width", 2);
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "max_coarse_shutter_width", 550);
 
     // set callback for image messages
     drv_.setCameraCallback(boost::bind(&ViSensorInterface::ImageCallback, this, _1));
