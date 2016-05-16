@@ -34,6 +34,6 @@
 
 int main(int argc, char** argv)
 {
-    ViSensorInterface viSensor(30,200); // (image_rate, imu_rate)
+    ViSensorInterface viSensor(20,200); // (image_rate, imu_rate)
     return 0;
 }

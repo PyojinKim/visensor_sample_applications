@@ -72,8 +72,24 @@ void ViSensorInterface::StartIntegratedSensor(uint32_t image_rate, uint32_t imu_
         return;
     }
 
+
+    // re-configure camera parameters
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM0, "row_flip", 0);
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM0, "column_flip", 0);
+
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "row_flip", 1);
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "column_flip", 1);
+
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM0, "min_coarse_shutter_width", 250);
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM0, "max_coarse_shutter_width", 1250);
+
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "min_coarse_shutter_width", 250);
+    drv_.setSensorConfigParam(visensor::SensorId::SensorId::CAM1, "max_coarse_shutter_width", 1250);
+
+
     // set callback for image messages
     drv_.setCameraCallback(boost::bind(&ViSensorInterface::ImageCallback, this, _1));
+
 
     // set callback for IMU messages
     drv_.setImuCallback(boost::bind(&ViSensorInterface::ImuCallback, this, _1));
@@ -118,10 +134,9 @@ void ViSensorInterface::worker(unsigned int cam_id)
         //Popping image from queue. If no image available, we perform a blocking wait
         visensor::ViFrame::Ptr frame = frameQueue[cam_id].pop();
         uint32_t camera_id = frame->camera_id;
-        cv::Mat fliped_image, image;
-        fliped_image.create(frame->height, frame->width, CV_8UC1);
-        memcpy(fliped_image.data, frame->getImageRawPtr(), frame->height * frame->width);
-        cv::flip(fliped_image, image, -1);
+        cv::Mat image;
+        image.create(frame->height, frame->width, CV_8UC1);
+        memcpy(image.data, frame->getImageRawPtr(), frame->height * frame->width);
 
         //update window with image
         char winName[255];
